@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 
 import App from "@/App.vue";
-import UserNav from "@/components/UserNav.vue";
+import UserNav from "@/components/ui/UserNav.vue";
 
 describe("UserNav", () => {
   const wrapper = mount(UserNav);

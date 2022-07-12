@@ -29,7 +29,7 @@
   </nav>
 </template>
 <script>
-import ProfileImage from "@/components/ProfileImage.vue";
+import ProfileImage from "@/components/ui/ProfileImage.vue";
 import SubNav from "@/components/ui/SubNav.vue";
 
 export default {
