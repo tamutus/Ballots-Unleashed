@@ -12,8 +12,8 @@
 </template>
 <script>
 import ElectionSearch from "@/components/ElectionSearch.vue";
-import FlashySpotlight from "@/components/ui/FlashySpotlight.vue";
-import SortableSections from "@/components/ui/SortableSections.vue";
+import FlashySpotlight from "@/components/section/FlashySpotlight.vue";
+import SortableSections from "@/components/section/SortableSections.vue";
 
 export default {
   name: "HomePage",

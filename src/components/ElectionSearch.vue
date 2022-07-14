@@ -5,46 +5,50 @@
     >
       Public votes in the community
     </h1>
-    <form
-      class="relative flex flex-wrap items-center h-12 my-14 border border-solid border-happy-border rounded-full"
-      @submit.prevent="searchElections"
-    >
-      <font-awesome-icon :icon="['fas', 'search']" class="mx-4" />
-      <div class="relative flex items-center flex-1 h-full pr-3">
-        <em
-          ><label for="election-title" class="absolute left-0 -top-8"
-            >Topic</label
-          >
-        </em>
-        <input
-          v-model="topicFilter"
-          type="text"
-          name="election-title"
-          :placeholder="mostPopularTopic.title"
-          class="focus:outline-none"
-        />
-      </div>
-      <span
-        class="flex items-center h-full px-3 border-l border-r border-happy-border"
-        >in</span
+    <form @submit.prevent="searchElections">
+      <div
+        class="relative flex flex-nowrap flex-col md:flex-row md:flex-wrap items-center h-48 md:h-12 my-14 border border-solid border-happy-border rounded-full"
       >
-      <div class="relative flex items-center flex-1 h-full pl-3">
-        <em>
-          <label for="election-location" class="absolute left-0 -top-8"
-            >Location</label
-          >
-        </em>
-        <input
-          v-model="locationFilter"
-          name="election-location"
-          placeholder="United States"
-          class="focus:outline-none"
+        <font-awesome-icon
+          :icon="['fas', 'search']"
+          class="relative -left-16 top-20 md:top-0 md:left-0 md:mx-4"
         />
+        <div class="relative flex items-center flex-1 h-12 md:pr-3">
+          <em
+            ><label for="election-title" class="absolute -top-2 md:-top-8"
+              >Topic</label
+            >
+          </em>
+          <input
+            v-model="topicFilter"
+            type="text"
+            name="election-title"
+            :placeholder="mostPopularTopic.title"
+          />
+        </div>
+        <span
+          class="flex items-center h-8 px-3 border-l border-r border-happy-border"
+          >in</span
+        >
+        <div class="relative flex items-center flex-1 h-12 md:pl-3">
+          <em>
+            <label
+              for="election-location"
+              class="absolute right-0 md:left-0 bottom-0 md:-top-8"
+              >Location</label
+            >
+          </em>
+          <input
+            v-model="locationFilter"
+            name="election-location"
+            placeholder="United States"
+          />
+        </div>
       </div>
       <action-button
         display-text="Find Elections"
         :action="searchElections"
-        class="mt-4 ml-12"
+        class="ml-12"
       />
     </form>
     <div>

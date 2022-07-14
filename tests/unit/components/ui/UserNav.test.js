@@ -17,20 +17,28 @@ describe("UserNav", () => {
   });
   // These tests need to be run with App.vue mounted, because that's where the login function lies.
   describe("when user logs in", () => {
-    const appWrapper = mount(App, {
+    const appConfig = {
       global: {
         stubs: {
           FontAwesomeIcon: true,
         },
       },
-    });
-    let loginButton = appWrapper.find("[data-test='login-button']");
+    };
+    const appWrapper = mount(App, appConfig);
     it("removes the login button", async () => {
+      const loginButton = appWrapper.find("[data-test='login-button']");
       await loginButton.trigger("click");
       const lingeringLoginButton = appWrapper.find(
         "[data-test='login-button']"
       );
       expect(lingeringLoginButton.exists()).toBe(false);
+      await loginButton.trigger("click");
+    });
+    it("emits a login event", async () => {
+      const wrapper = mount(UserNav);
+      const loginButton = wrapper.find("[data-test='login-button']");
+      await loginButton.trigger("click");
+      expect(wrapper.emitted()["login"]).toEqual([[]]);
     });
     describe("userbar has a Log Out element", () => {
       it("appearing", () => {
