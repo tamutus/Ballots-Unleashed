@@ -1,9 +1,18 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, RouterLinkStub } from "@vue/test-utils";
 
 import MainNav from "@/components/ui/MainNav.vue";
 
 describe("MainNav", () => {
-  const wrapper = shallowMount(MainNav);
+  const createConfig = () => ({
+    global: {
+      stubs: {
+        "router-link": RouterLinkStub,
+      },
+    },
+  });
+
+  const wrapper = shallowMount(MainNav, createConfig());
+
   const menuItemTexts = wrapper
     .findAll("[data-test='main-nav-item']")
     .map((item) => item.text());

@@ -6,19 +6,21 @@
       :sections="sectionTitles"
       @orderchange="changeOrder"
     />
-    <election-search />
+    <router-link
+      to="/elections"
+      class="w-3/4 block my-12 mx-auto p-6 text-3xl bg-cautious-background border-cautious-border text-cautious-text text-center font-cursive"
+      >Browse ballots open to you</router-link
+    >
     <sortable-sections :sections="homeSections" />
   </div>
 </template>
 <script>
-import ElectionSearch from "@/components/ElectionSearch.vue";
 import FlashySpotlight from "@/components/section/FlashySpotlight.vue";
 import SortableSections from "@/components/section/SortableSections.vue";
 
 export default {
-  name: "HomePage",
+  name: "HomeView",
   components: {
-    ElectionSearch,
     FlashySpotlight,
     SortableSections,
   },

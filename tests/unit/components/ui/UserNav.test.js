@@ -1,58 +1,82 @@
-import { mount } from "@vue/test-utils";
+import { mount, RouterLinkStub } from "@vue/test-utils";
+import { createRouter, createWebHistory } from "vue-router";
+import { routes } from "@/router"; // This import should point to your routes file declared above
 
 import App from "@/App.vue";
 import UserNav from "@/components/ui/UserNav.vue";
 
+const router = createRouter({
+  history: createWebHistory(),
+  routes: routes,
+});
+
+const appConfig = () => ({
+  global: {
+    plugins: [router],
+    stubs: {
+      FontAwesomeIcon: true,
+      "router-link": RouterLinkStub,
+    },
+  },
+});
 describe("UserNav", () => {
-  const wrapper = mount(UserNav);
+  let wrapper;
+
   describe("when user is logged out", () => {
-    const loginButton = wrapper.find("[data-test='login-button']");
+    beforeEach(async () => {
+      router.push("/");
+
+      // After this line, router is ready
+      await router.isReady();
+      wrapper = mount(UserNav, appConfig());
+    });
+
     it("doesn't display a profile image", () => {
       const profileImage = wrapper.find("[data-test='profile-image']");
       expect(profileImage.exists()).toBe(false);
     });
     it("prompts user to log in", () => {
+      const loginButton = wrapper.find("[data-test='login-button']");
       expect(loginButton.exists()).toBe(true);
     });
   });
   // These tests need to be run with App.vue mounted, because that's where the login function lies.
   describe("when user logs in", () => {
-    const appConfig = {
-      global: {
-        stubs: {
-          FontAwesomeIcon: true,
-        },
-      },
-    };
-    const appWrapper = mount(App, appConfig);
     it("removes the login button", async () => {
-      const loginButton = appWrapper.find("[data-test='login-button']");
-      await loginButton.trigger("click");
-      const lingeringLoginButton = appWrapper.find(
-        "[data-test='login-button']"
-      );
-      expect(lingeringLoginButton.exists()).toBe(false);
-      await loginButton.trigger("click");
-    });
-    it("emits a login event", async () => {
-      const wrapper = mount(UserNav);
+      wrapper = mount(App, appConfig());
       const loginButton = wrapper.find("[data-test='login-button']");
       await loginButton.trigger("click");
-      expect(wrapper.emitted()["login"]).toEqual([[]]);
+      const lingeringLoginButton = wrapper.find("[data-test='login-button']");
+      expect(lingeringLoginButton.exists()).toBe(false);
     });
     describe("userbar has a Log Out element", () => {
-      it("appearing", () => {
-        expect(appWrapper.text()).toMatch("Log Out");
+      it("appearing", async () => {
+        wrapper = mount(App, appConfig());
+        const loginButton = wrapper.find("[data-test='login-button']");
+        await loginButton.trigger("click");
+        expect(wrapper.text()).toMatch("Log Out");
       });
     });
     describe("userbar has a profile element", () => {
-      it("appearing", () => {
-        expect(appWrapper.text()).toMatch("Profile");
+      it("appearing", async () => {
+        wrapper = mount(App, appConfig());
+        const loginButton = wrapper.find("[data-test='login-button']");
+        await loginButton.trigger("click");
+        expect(wrapper.text()).toMatch("Profile");
       });
     });
-    it("displays a profile image", () => {
-      const profileImage = appWrapper.find("[data-test='profile-image']");
+    it("displays a profile image", async () => {
+      wrapper = mount(App, appConfig());
+      const loginButton = wrapper.find("[data-test='login-button']");
+      await loginButton.trigger("click");
+      const profileImage = wrapper.find("[data-test='profile-image']");
       expect(profileImage.exists()).toBe(true);
+    });
+    it("emits a login event", async () => {
+      wrapper = mount(UserNav, appConfig());
+      const loginButton = wrapper.find("[data-test='login-button']");
+      await loginButton.trigger("click");
+      expect(wrapper.emitted()["login"]).toEqual([[]]);
     });
   });
 });

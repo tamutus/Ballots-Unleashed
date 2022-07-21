@@ -1,7 +1,7 @@
-import { nextTick } from "vue";
+// import { nextTick } from "vue";
 import { mount } from "@vue/test-utils";
 
-import FlashySpotlight from "@/components/FlashySpotlight.vue";
+import FlashySpotlight from "@/components/section/FlashySpotlight.vue";
 
 describe("FlashySpotlight", () => {
   const testHeaders = [

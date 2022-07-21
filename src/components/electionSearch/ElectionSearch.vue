@@ -24,6 +24,7 @@
             type="text"
             name="election-title"
             :placeholder="mostPopularTopic.title"
+            data-test="topic-filter"
           />
         </div>
         <span
@@ -34,14 +35,16 @@
           <em>
             <label
               for="election-location"
-              class="absolute right-0 md:left-0 bottom-0 md:-top-8"
+              class="absolute self-end md:self-start bottom-0 md:-top-8"
               >Location</label
             >
           </em>
           <input
             v-model="locationFilter"
+            type="text"
             name="election-location"
             placeholder="United States"
+            data-test="location-filter"
           />
         </div>
       </div>
@@ -49,6 +52,7 @@
         display-text="Find Elections"
         :action="searchElections"
         class="ml-12"
+        test-name="election-search-submit"
       />
     </form>
     <div>
@@ -62,6 +66,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 import ActionButton from "@/components/ui/ActionButton.vue";
 
 export default {
@@ -71,27 +77,15 @@ export default {
   },
   data() {
     return {
-      topics: [
-        {
-          title: "Climate action priorities",
-          ballots: [[1, 2, 3]],
-        },
-        {
-          title: "Best monuments to visit",
-          ballots: [
-            [3, 1, 5, 2],
-            [4, 1],
-          ],
-        },
-      ],
+      elections: [],
       searchResults: [],
-      electionFilter: "",
+      topicFilter: "",
       locationFilter: "",
     };
   },
   computed: {
     mostPopularTopic() {
-      return this.topics.reduce((popularest, topic) => {
+      return this.elections.reduce((popularest, topic) => {
         if (
           !popularest.ballots ||
           topic.ballots.length > popularest.ballots.length
@@ -101,8 +95,8 @@ export default {
         return popularest;
       }, {});
     },
-    topicsByPopularity() {
-      return this.topics.reduce((sorted, topic) => {
+    electionsByPopularity() {
+      return this.elections.reduce((sorted, topic) => {
         for (let i = 0; i < sorted.length; i++) {
           if (
             !sorted[i].ballots ||
@@ -117,8 +111,22 @@ export default {
       }, []);
     },
   },
+  mounted() {
+    axios.get("http://localhost:3000/elections").then((res) => {
+      this.elections = res.data;
+    });
+  },
   methods: {
-    async searchElections() {
+    searchElections() {
+      this.$router.push({
+        name: "electionFilter",
+        query: {
+          topic: this.topicFilter,
+          location: this.locationFilter,
+        },
+      });
+    },
+    async searchIssues() {
       let fetchString = `https://magnova.space/wiki/search?target=${encodeURIComponent(
         this.topicFilter
       )}&issues=true`;

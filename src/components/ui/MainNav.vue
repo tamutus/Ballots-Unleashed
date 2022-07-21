@@ -10,20 +10,20 @@
           class="ml-0 rounded-lg"
           data-test="profile-image"
         />
-        <a
+        <router-link
           v-for="menuItem of menuItems"
           :key="menuItem.title"
-          :href="menuItem.link"
+          :to="menuItem.link"
           class="ml-8 first:ml-0"
           data-test="main-nav-item"
           @mouseenter="loadSubNav(menuItem)"
-          >{{ menuItem.title }}</a
+          >{{ menuItem.title }}</router-link
         >
       </div>
     </div>
     <sub-nav
       :menu-items="activeSubMenuItems"
-      class="mt-16 p-4 pb-6"
+      class="top-16 mt-0"
       @mouseleave="closeSubNav"
     />
   </nav>
@@ -76,6 +76,7 @@ export default {
         },
         {
           title: "Bubbles",
+          link: "/bubbles",
           subMenuItems: [
             {
               title: "My bubbles",

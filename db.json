@@ -1,0 +1,113 @@
+{
+  "elections": [
+    {
+      "_id": 1,
+      "title": "Climate action priorities",
+      "ballots": [
+        [1, 2, 3],
+        [3, 1, 5, 2]
+      ]
+    },
+    {
+      "_id": 2,
+      "title": "Best monuments to visit",
+      "ballots": []
+    },
+    {
+      "_id": 3,
+      "title": "Best Pokemon",
+      "ballots": []
+    },
+    {
+      "_id": 4,
+      "title": "Best vegan restaurant",
+      "ballots": []
+    },
+    {
+      "_id": 5,
+      "title": "Most underused renewable energy",
+      "ballots": []
+    },
+    {
+      "_id": 6,
+      "title": "Next book club reading",
+      "ballots": []
+    },
+    {
+      "_id": 7,
+      "title": "What's for dinner?",
+      "ballots": []
+    },
+    {
+      "_id": 8,
+      "title": "Next vacation destination",
+      "ballots": []
+    },
+    {
+      "_id": 9,
+      "title": "Next show to watch",
+      "ballots": []
+    },
+    {
+      "_id": 10,
+      "title": "Which wildlife needs most protection efforts?",
+      "ballots": []
+    },
+    {
+      "_id": 11,
+      "title": "Which economic system should we use?",
+      "ballots": []
+    },
+    {
+      "_id": 12,
+      "title": "What does our justice system need most?",
+      "ballots": []
+    },
+    {
+      "_id": 13,
+      "title": "Happiest songs",
+      "ballots": []
+    },
+    {
+      "_id": 14,
+      "title": "Most influential masterworks",
+      "ballots": []
+    },
+    {
+      "_id": 15,
+      "title": "Cannabis regulation",
+      "ballots": []
+    },
+    {
+      "_id": 16,
+      "title": "What should we protest?",
+      "ballots": []
+    },
+    {
+      "_id": 17,
+      "title": "Which companies should people boycott?",
+      "ballots": []
+    },
+    {
+      "_id": 18,
+      "title": "What should next Mars mission be?",
+      "ballots": []
+    },
+    {
+      "_id": 19,
+      "title": "What should next moon mission be?",
+      "ballots": []
+    },
+    {
+      "_id": 20,
+      "title": "Best Voting Method",
+      "ballots": []
+    },
+    {
+      "_id": 21,
+      "title": "Best state to live",
+      "ballots": []
+    }
+  ],
+  "idCounters": ["elections"]
+}

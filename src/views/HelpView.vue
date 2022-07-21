@@ -1,9 +1,9 @@
 <template>
-  <h1></h1>
+  <h1>Help me!</h1>
 </template>
 <script>
 export default {
-  name: "ProfilePage",
+  name: "HelpView",
 };
 </script>
 <style></style>

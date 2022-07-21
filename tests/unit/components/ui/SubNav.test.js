@@ -1,6 +1,6 @@
-import { mount } from "@vue/test-utils";
+import { mount, RouterLinkStub } from "@vue/test-utils";
 
-import SubNav from "@/components/SubNav.vue";
+import SubNav from "@/components/ui/SubNav.vue";
 
 describe("SubNav", () => {
   const testItems = [
@@ -18,6 +18,7 @@ describe("SubNav", () => {
     global: {
       stubs: {
         FontAwesomeIcon: true,
+        "router-link": RouterLinkStub,
       },
     },
     props: {

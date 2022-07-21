@@ -8,21 +8,23 @@
       @logout="logOut"
       @login="logIn"
     />
-    <HomePage :user="user" />
+    <router-view v-slot="{ Component }" :user="user">
+      <transition name="slide">
+        <component :is="Component" :key="$route.path"></component>
+      </transition>
+    </router-view>
   </div>
 </template>
 
 <script>
 import UserNav from "@/components/ui/UserNav.vue";
 import MainNav from "@/components/ui/MainNav.vue";
-import HomePage from "@/pages/HomePage.vue";
 
 export default {
   name: "App",
   components: {
     UserNav,
     MainNav,
-    HomePage,
   },
   data() {
     return {
@@ -69,5 +71,22 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 0px;
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: opacity 0.3s, transform 0.3s;
+}
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.slide-leave-active {
+  position: absolute;
+}
+.slide-enter-from {
+  transform: scale(0);
+  opacity: 0;
+}
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(-30%);
 }
 </style>
