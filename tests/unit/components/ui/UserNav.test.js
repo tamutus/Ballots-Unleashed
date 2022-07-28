@@ -10,9 +10,10 @@ const router = createRouter({
   routes: routes,
 });
 
-const appConfig = (store) => ({
+const appConfig = ($store) => ({
   global: {
-    plugins: [store, router],
+    plugins: [router],
+    mocks: { $store },
     stubs: {
       FontAwesomeIcon: true,
       "router-link": RouterLinkStub,
