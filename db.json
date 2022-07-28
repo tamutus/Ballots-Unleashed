@@ -107,6 +107,27 @@
       "_id": 21,
       "title": "Best state to live",
       "ballots": []
+    },
+    {
+      "_id": 22,
+      "title": "Coolest villain",
+      "candidates": [
+        {
+          "ordinal": 1,
+          "name": "Radahn",
+          "description": "A very large guy with a very small horse"
+        },
+        {
+          "ordinal": 2,
+          "name": "Mewtwo",
+          "description": "Cool as a cucumber"
+        },
+        {
+          "ordinal": 3,
+          "name": "Smaug",
+          "description": "Scaley plunderer"
+        }
+      ]
     }
   ],
   "idCounters": ["elections"]
