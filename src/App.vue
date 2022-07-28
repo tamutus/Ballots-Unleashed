@@ -1,9 +1,8 @@
 <template>
-  <div :class="appClass">
-    <MainNav :user="user" :is-logged-in="isLoggedIn" />
+  <div id="app-box" :class="appClass">
+    <MainNav :user="user" />
     <UserNav
       :user="user"
-      :is-logged-in="isLoggedIn"
       class="relative z-10"
       @logout="logOut"
       @login="logIn"
@@ -35,12 +34,6 @@ export default {
     };
   },
   computed: {
-    isLoggedIn() {
-      if (this.user && this.user.username !== "Guest") {
-        return true;
-      }
-      return false;
-    },
     appClass() {
       return {
         [this.activeBackground]: true,
@@ -71,6 +64,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 0px;
+}
+#app-box {
+  min-height: 100vh;
 }
 .slide-enter-active,
 .slide-leave-active {

@@ -1,17 +1,20 @@
 import { shallowMount, RouterLinkStub } from "@vue/test-utils";
+import { createStore } from "vuex";
 
 import MainNav from "@/components/ui/MainNav.vue";
 
 describe("MainNav", () => {
-  const createConfig = () => ({
+  const createConfig = (store) => ({
     global: {
+      plugins: [store],
       stubs: {
         "router-link": RouterLinkStub,
       },
     },
   });
 
-  const wrapper = shallowMount(MainNav, createConfig());
+  const store = createStore();
+  const wrapper = shallowMount(MainNav, createConfig(store));
 
   const menuItemTexts = wrapper
     .findAll("[data-test='main-nav-item']")
@@ -24,6 +27,20 @@ describe("MainNav", () => {
       it("displays the a home link", () => {
         expect(wrapper.text()).toMatch("RCV");
       });
+    });
+  });
+  describe("when user is logged in", () => {
+    it("displays a profile image", () => {
+      const store = createStore({
+        state() {
+          return {
+            isLoggedIn: true,
+          };
+        },
+      });
+      const wrapper = shallowMount(MainNav, createConfig(store));
+      const profileImage = wrapper.find("[data-test='profile-image']");
+      expect(profileImage.exists()).toBe(true);
     });
   });
 });

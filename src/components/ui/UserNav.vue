@@ -42,18 +42,18 @@ export default {
         };
       },
     },
-    isLoggedIn: {
-      type: Boolean,
-      default: false,
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
     },
   },
-  emits: ["login", "logout"],
   methods: {
     logIn() {
-      this.$emit("login");
+      this.$store.commit("LOGIN_USER");
     },
     logOut() {
-      this.$emit("logout");
+      this.$store.commit("LOGOUT_USER");
     },
   },
 };

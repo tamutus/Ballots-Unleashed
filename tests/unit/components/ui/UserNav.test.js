@@ -1,8 +1,8 @@
 import { mount, RouterLinkStub } from "@vue/test-utils";
 import { createRouter, createWebHistory } from "vue-router";
+import { createStore } from "vuex";
 import { routes } from "@/router"; // This import should point to your routes file declared above
 
-import App from "@/App.vue";
 import UserNav from "@/components/ui/UserNav.vue";
 
 const router = createRouter({
@@ -10,9 +10,9 @@ const router = createRouter({
   routes: routes,
 });
 
-const appConfig = () => ({
+const appConfig = (store) => ({
   global: {
-    plugins: [router],
+    plugins: [store, router],
     stubs: {
       FontAwesomeIcon: true,
       "router-link": RouterLinkStub,
@@ -21,14 +21,19 @@ const appConfig = () => ({
 });
 describe("UserNav", () => {
   let wrapper;
-
   describe("when user is logged out", () => {
     beforeEach(async () => {
       router.push("/");
-
       // After this line, router is ready
       await router.isReady();
-      wrapper = mount(UserNav, appConfig());
+      const store = createStore({
+        state() {
+          return {
+            isLoggedIn: false,
+          };
+        },
+      });
+      wrapper = mount(UserNav, appConfig(store));
     });
 
     it("doesn't display a profile image", () => {
@@ -41,42 +46,38 @@ describe("UserNav", () => {
     });
   });
   // These tests need to be run with App.vue mounted, because that's where the login function lies.
-  describe("when user logs in", () => {
-    it("removes the login button", async () => {
-      wrapper = mount(App, appConfig());
-      const loginButton = wrapper.find("[data-test='login-button']");
-      await loginButton.trigger("click");
-      const lingeringLoginButton = wrapper.find("[data-test='login-button']");
-      expect(lingeringLoginButton.exists()).toBe(false);
+  describe("when user is logged in", () => {
+    let wrapper, store;
+    beforeEach(() => {
+      store = createStore({
+        state() {
+          return {
+            isLoggedIn: true,
+          };
+        },
+      });
+      wrapper = mount(UserNav, appConfig(store));
     });
-    describe("userbar has a Log Out element", () => {
-      it("appearing", async () => {
-        wrapper = mount(App, appConfig());
+    it("login button is removed", async () => {
+      const loginButton = wrapper.find("[data-test='login-button']");
+      expect(loginButton.exists()).toBe(false);
+    });
+    it('"Log Out" appears', () => {
+      expect(wrapper.text()).toMatch("Log Out");
+    });
+    it("userbar profile element appears", () => {
+      expect(wrapper.text()).toMatch("Profile");
+    });
+    describe("the logout button", () => {
+      it("calls vuex", async () => {
+        const store = createStore();
+        const commit = jest.fn();
+        store.commit = commit;
+        const wrapper = mount(UserNav, appConfig(store));
         const loginButton = wrapper.find("[data-test='login-button']");
         await loginButton.trigger("click");
-        expect(wrapper.text()).toMatch("Log Out");
+        expect(commit).toHaveBeenCalledWith("LOGIN_USER");
       });
-    });
-    describe("userbar has a profile element", () => {
-      it("appearing", async () => {
-        wrapper = mount(App, appConfig());
-        const loginButton = wrapper.find("[data-test='login-button']");
-        await loginButton.trigger("click");
-        expect(wrapper.text()).toMatch("Profile");
-      });
-    });
-    it("displays a profile image", async () => {
-      wrapper = mount(App, appConfig());
-      const loginButton = wrapper.find("[data-test='login-button']");
-      await loginButton.trigger("click");
-      const profileImage = wrapper.find("[data-test='profile-image']");
-      expect(profileImage.exists()).toBe(true);
-    });
-    it("emits a login event", async () => {
-      wrapper = mount(UserNav, appConfig());
-      const loginButton = wrapper.find("[data-test='login-button']");
-      await loginButton.trigger("click");
-      expect(wrapper.emitted()["login"]).toEqual([[]]);
     });
   });
 });

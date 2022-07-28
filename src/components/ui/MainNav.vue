@@ -47,11 +47,6 @@ export default {
         };
       },
     },
-    isLoggedIn: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
   },
   data: () => {
     return {
@@ -106,6 +101,9 @@ export default {
   computed: {
     activeSubMenuItems() {
       return this.activeMenuItem?.subMenuItems || [];
+    },
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
     },
     subMenuOpen() {
       if (this.activeMenuItem) {
