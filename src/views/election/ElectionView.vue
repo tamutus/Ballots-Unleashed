@@ -1,33 +1,35 @@
 <template>
   <div class="election">
     <h1 class="text-5xl font-cursive ml-8 mt-4 mb-8">{{ election.title }}</h1>
-    <div class="flex flex-col md:flex-row">
-      <candidate-section :candidates="election.candidates" />
+    <div v-if="hasElectionData" class="flex flex-col md:flex-row">
+      <candidate-section />
       <victor-section />
     </div>
+    <candidate-submitter />
   </div>
 </template>
 <script>
-import axios from "axios";
+import { mapState } from "vuex";
 
 import CandidateSection from "@/components/election/CandidateSection.vue";
 import VictorSection from "@/components/election/VictorSection.vue";
+import CandidateSubmitter from "@/components/election/CandidateSubmitter.vue";
+import { FETCH_ELECTION } from "@/store/constants";
 
 export default {
   name: "ElectionView",
-  components: { CandidateSection, VictorSection },
+  components: { CandidateSection, CandidateSubmitter, VictorSection },
   data() {
     return {
-      election: {},
+      hasElectionData: false,
     };
   },
+  computed: {
+    ...mapState(["election"]),
+  },
   mounted() {
-    const baseURL = process.env.VUE_APP_API_URL;
-    axios
-      .get(`${baseURL}/elections?_id=${this.$route.params.id}`)
-      .then((res) => {
-        this.election = res.data[0];
-      });
+    this.$store.dispatch(FETCH_ELECTION, this.$route.params.id);
+    this.hasElectionData = true;
   },
 };
 </script>

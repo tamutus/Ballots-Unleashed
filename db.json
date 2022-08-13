@@ -1,115 +1,162 @@
 {
   "elections": [
     {
-      "_id": 1,
+      "id": "1",
       "title": "Climate action priorities",
       "ballots": [
-        [1, 2, 3],
-        [3, 1, 5, 2]
+        {
+          "userID": 1,
+          "ranking": [
+            1,
+            2
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "ordinal": 1,
+          "name": "End War",
+          "description": "War creates massive, but untracked, carbon emissions"
+        },
+        {
+          "ordinal": 2,
+          "name": "Use Renewable Energy for Grid Electricity",
+          "description": "Carbon needs to be phased out of the grid"
+        }
       ]
     },
     {
-      "_id": 2,
+      "id": 2,
       "title": "Best monuments to visit",
       "ballots": []
     },
     {
-      "_id": 3,
+      "id": 3,
       "title": "Best Pokemon",
       "ballots": []
     },
     {
-      "_id": 4,
+      "id": 4,
       "title": "Best vegan restaurant",
       "ballots": []
     },
     {
-      "_id": 5,
+      "id": 5,
       "title": "Most underused renewable energy",
       "ballots": []
     },
     {
-      "_id": 6,
+      "id": 6,
       "title": "Next book club reading",
       "ballots": []
     },
     {
-      "_id": 7,
+      "id": 7,
       "title": "What's for dinner?",
       "ballots": []
     },
     {
-      "_id": 8,
+      "id": 8,
       "title": "Next vacation destination",
       "ballots": []
     },
     {
-      "_id": 9,
+      "id": 9,
       "title": "Next show to watch",
       "ballots": []
     },
     {
-      "_id": 10,
+      "id": 10,
       "title": "Which wildlife needs most protection efforts?",
       "ballots": []
     },
     {
-      "_id": 11,
+      "id": 11,
       "title": "Which economic system should we use?",
       "ballots": []
     },
     {
-      "_id": 12,
+      "id": 12,
       "title": "What does our justice system need most?",
       "ballots": []
     },
     {
-      "_id": 13,
+      "id": 13,
       "title": "Happiest songs",
       "ballots": []
     },
     {
-      "_id": 14,
+      "id": 14,
       "title": "Most influential masterworks",
       "ballots": []
     },
     {
-      "_id": 15,
+      "id": 15,
       "title": "Cannabis regulation",
       "ballots": []
     },
     {
-      "_id": 16,
+      "id": 16,
       "title": "What should we protest?",
       "ballots": []
     },
     {
-      "_id": 17,
+      "id": 17,
       "title": "Which companies should people boycott?",
       "ballots": []
     },
     {
-      "_id": 18,
+      "id": 18,
       "title": "What should next Mars mission be?",
       "ballots": []
     },
     {
-      "_id": 19,
+      "id": 19,
       "title": "What should next moon mission be?",
       "ballots": []
     },
     {
-      "_id": 20,
+      "id": 20,
       "title": "Best Voting Method",
-      "ballots": []
+      "candidates": [
+        {
+          "ordinal": 1,
+          "name": "Single Transferable Vote",
+          "description": "Iteratively remove candidate with lowest first choice votes from everybody's ballot"
+        },
+        {
+          "ordinal": 2,
+          "name": "Borda Count",
+          "description": "Candidates get 1 more point for each position higher on ballot. Person with most points wins."
+        }
+      ],
+      "issues": [
+        {
+          "_id": "61cc90e95810e10016b0fb10",
+          "name": "Identify Best Ranked-Choice Voting System"
+        },
+        {
+          "_id": "61c0d34b08717d00167f17ba",
+          "name": "Ignorance of Ranked Choice Voting"
+        }
+      ],
+      "ballots": [
+        {
+          "userID": 1,
+          "ranking": [
+            1,
+            2
+          ]
+        }
+      ]
     },
     {
-      "_id": 21,
+      "id": 21,
       "title": "Best state to live",
       "ballots": []
     },
     {
-      "_id": 22,
+      "id": 22,
       "title": "Coolest villain",
       "candidates": [
         {
@@ -127,8 +174,60 @@
           "name": "Smaug",
           "description": "Scaley plunderer"
         }
+      ],
+      "ballots": [
+        {
+          "userID": 1,
+          "ranking": [
+            2,
+            1,
+            3
+          ]
+        },
+        {
+          "userID": 2,
+          "ranking": [
+            2,
+            3,
+            1
+          ]
+        },
+        {
+          "userID": 3,
+          "ranking": [
+            1,
+            2
+          ]
+        },
+        {
+          "userID": 4,
+          "ranking": [
+            3,
+            1
+          ]
+        },
+        {
+          "userID": 5,
+          "ranking": [
+            2,
+            3,
+            1
+          ]
+        }
       ]
     }
   ],
-  "idCounters": ["elections"]
+  "users": [
+    {
+      "id": 1,
+      "username": "Lavra",
+      "password": "easytoguess",
+      "profileImage": "https://i.kym-cdn.com/photos/images/newsfeed/001/126/045/381.jpg"
+    }
+  ],
+  "idCounters": [
+    {
+      "id": "elections"
+    }
+  ]
 }

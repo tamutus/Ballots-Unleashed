@@ -41,7 +41,7 @@ describe("ElectionHighlight", () => {
   });
   it("links to individual elections", () => {
     const electionProps = createElectionProps({
-      _id: "coollection",
+      id: "coollection",
     });
     const wrapper = mount(ElectionHighlight, createConfig(electionProps));
     const electionLink = wrapper.findComponent(RouterLinkStub);

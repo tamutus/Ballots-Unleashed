@@ -1,16 +1,19 @@
 <template>
   <li class="flex flex-row my-2">
     <vote-button-pair
+      v-if="isLoggedIn"
       :top="top"
       :sorted="sorted"
       @upvote="upvote"
       @downvote="downvote"
     />
     <div
-      class="w-full mx-2 py-5 flex flex-row items-baseline bg-serious-foreground rounded-tr-3xl"
+      class="w-full mr-2 py-5 flex flex-col md:flex-row items-baseline bg-serious-foreground rounded-tr-3xl rounded-bl-3xl"
     >
-      <h3 class="font-cursive text-2xl mx-2">{{ candidate.name }}</h3>
-      <p class="border-b-4 border-serious-background mx-4">
+      <h3 class="candidate-name font-cursive text-2xl ml-2 mr-6">
+        {{ candidate.name }}
+      </h3>
+      <p class="border-b-4 border-serious-background mr-4 ml-auto">
         {{ candidate.description }}
       </p>
     </div>
@@ -19,6 +22,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import VoteButtonPair from "@/components/ui/VoteButtonPair.vue";
 
 export default {
@@ -44,6 +49,9 @@ export default {
     },
   },
   emits: ["upvote", "downvote"],
+  computed: {
+    ...mapState(["isLoggedIn"]),
+  },
   methods: {
     upvote() {
       this.$emit("upvote", this.candidate.ordinal);
@@ -55,4 +63,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.candidate-name {
+  border-radius: 35% / 15% 15% 0 0;
+}
+</style>

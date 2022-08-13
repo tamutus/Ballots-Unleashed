@@ -1,9 +1,9 @@
 import { mount, RouterLinkStub } from "@vue/test-utils";
 import { createRouter, createWebHistory } from "vue-router";
-import { createStore } from "vuex";
 import { routes } from "@/router"; // This import should point to your routes file declared above
 
 import UserNav from "@/components/ui/UserNav.vue";
+import { mutations } from "@/store";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,14 +27,13 @@ describe("UserNav", () => {
       router.push("/");
       // After this line, router is ready
       await router.isReady();
-      const store = createStore({
-        state() {
-          return {
-            isLoggedIn: false,
-          };
+      const $store = {
+        state: {
+          isLoggedIn: false,
+          user: {},
         },
-      });
-      wrapper = mount(UserNav, appConfig(store));
+      };
+      wrapper = mount(UserNav, appConfig($store));
     });
 
     it("doesn't display a profile image", () => {
@@ -45,19 +44,38 @@ describe("UserNav", () => {
       const loginButton = wrapper.find("[data-test='login-button']");
       expect(loginButton.exists()).toBe(true);
     });
-  });
-  // These tests need to be run with App.vue mounted, because that's where the login function lies.
-  describe("when user is logged in", () => {
-    let wrapper, store;
-    beforeEach(() => {
-      store = createStore({
-        state() {
-          return {
-            isLoggedIn: true,
-          };
-        },
+    describe("the login button", () => {
+      it("calls vuex", async () => {
+        const fetchUser = jest.fn();
+        const $store = {
+          state: {
+            isLoggedIn: false,
+          },
+          dispatch: fetchUser,
+        };
+        const wrapper = mount(UserNav, appConfig($store));
+        const loginButton = wrapper.find("[data-test='login-button']");
+        await loginButton.trigger("click");
+        expect(fetchUser).toHaveBeenCalled();
       });
-      wrapper = mount(UserNav, appConfig(store));
+    });
+  });
+  describe("when user is logged in", () => {
+    let wrapper, $store;
+    beforeEach(() => {
+      $store = {
+        state: {
+          isLoggedIn: true,
+          user: {
+            id: 1,
+            username: "Lavra",
+            profileImage:
+              "https://i.kym-cdn.com/photos/images/newsfeed/001/126/045/381.jpg",
+          },
+        },
+        mutations,
+      };
+      wrapper = mount(UserNav, appConfig($store));
     });
     it("login button is removed", async () => {
       const loginButton = wrapper.find("[data-test='login-button']");
@@ -71,13 +89,22 @@ describe("UserNav", () => {
     });
     describe("the logout button", () => {
       it("calls vuex", async () => {
-        const store = createStore();
-        const commit = jest.fn();
-        store.commit = commit;
-        const wrapper = mount(UserNav, appConfig(store));
-        const loginButton = wrapper.find("[data-test='login-button']");
-        await loginButton.trigger("click");
-        expect(commit).toHaveBeenCalledWith("LOGIN_USER");
+        const $store = {
+          state: {
+            isLoggedIn: true,
+            user: {
+              id: 1,
+              username: "Lavra",
+              profileImage:
+                "https://i.kym-cdn.com/photos/images/newsfeed/001/126/045/381.jpg",
+            },
+          },
+          commit: jest.fn(),
+        };
+        const wrapper = mount(UserNav, appConfig($store));
+        const logoutButton = wrapper.find("[data-test='logout-button']");
+        await logoutButton.trigger("click");
+        expect($store.commit).toHaveBeenCalledWith("LOGOUT_USER");
       });
     });
   });

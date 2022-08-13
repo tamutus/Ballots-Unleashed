@@ -2,12 +2,16 @@
   <div
     :class="`fixed left-0 w-3/4 ${navPadding} transition-padding duration-500`"
   >
-    <transition-group name="h-list" tag="nav">
+    <transition-group
+      name="h-list"
+      tag="nav"
+      class="flex flex-col md:flex-row items-start"
+    >
       <router-link
         v-for="menuItem of menuItems"
         :key="menuItem.title"
         :to="menuItem.link"
-        :class="`bg-nice-background border-b-4 max-h-10 ${linkHeight} ml-4 first:ml-0 px-3 border-solid border-nice-border rounded-full overflow-y-hidden transition-height transition-padding duration-500`"
+        :class="`bg-nice-background border-b-4 max-h-10 ${linkHeight} mb-4 md:mb-0 md:ml-4 first:ml-0 px-3 border-solid border-nice-border rounded-full overflow-y-hidden transition-height transition-padding duration-500`"
         data-test="sub-nav-item"
       >
         <font-awesome-icon
@@ -53,7 +57,7 @@ export default {
     },
     navPadding() {
       if (this.menuItems.length > 0) {
-        return "p-4 pb-6";
+        return "p-4 md:pb-6";
       } else {
         return "p-0";
       }
@@ -71,7 +75,14 @@ export default {
 .h-list-enter-from {
   opacity: 0;
   filter: hue-rotate(90deg);
-  transform: translateY(-100px);
+  transform: translate(-30px, 70px);
+}
+@media screen and (max-width: 767px) {
+  .h-list-enter-from {
+    opacity: 0;
+    filter: hue-rotate(90deg);
+    transform: translateX(-100px);
+  }
 }
 .h-list-enter-active {
   @apply ml-0;
@@ -86,7 +97,7 @@ export default {
 }
 .h-list-leave-to {
   opacity: 0;
-  transform: translate(100%, -10px);
+  transform: translateX(100%);
   filter: hue-rotate(-90deg);
   height: 0;
   padding: 0;

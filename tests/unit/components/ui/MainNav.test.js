@@ -9,6 +9,7 @@ describe("MainNav", () => {
       plugins: [store],
       stubs: {
         "router-link": RouterLinkStub,
+        FontAwesomeIcon: true,
       },
     },
   });
@@ -35,6 +36,12 @@ describe("MainNav", () => {
         state() {
           return {
             isLoggedIn: true,
+            user: {
+              id: 1,
+              username: "Lavra",
+              profileImage:
+                "https://i.kym-cdn.com/photos/images/newsfeed/001/126/045/381.jpg",
+            },
           };
         },
       });

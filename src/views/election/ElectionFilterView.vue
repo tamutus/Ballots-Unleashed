@@ -1,24 +1,26 @@
 <template>
   <div class="flex flex-nowrap flex-col-reverse md:flex-row w-full h-full">
-    <election-filters-sidebar :elections="elections" />
+    <election-filters-sidebar @update-filter="verifyPage" />
     <div>
       <election-list :elections="displayedElections" />
       <search-paginator
         :page="page"
         :page-count="pageCount"
         :page-size="take"
-        class="pt-2 pb-2"
+        class="py-4 bg-nice-foreground border-solid border-t-dashed border-t-4 border-t-black border-b-4 border-b-nice-border"
         @update-page-size="updatePageSize"
       />
     </div>
   </div>
 </template>
 <script>
-import axios from "axios";
+// import axios from "axios";
+import { mapActions, mapGetters } from "vuex";
 
 import ElectionFiltersSidebar from "@/components/electionSearch/ElectionFiltersSidebar.vue";
 import ElectionList from "@/components/electionSearch/ElectionList.vue";
 import SearchPaginator from "@/components/ui/SearchPaginator.vue";
+import { FETCH_ELECTIONS, FILTERED_ELECTIONS } from "@/store/constants";
 
 export default {
   name: "ElectionFilterView",
@@ -33,7 +35,6 @@ export default {
   },
   data() {
     return {
-      elections: [],
       take: 10,
     };
   },
@@ -42,23 +43,25 @@ export default {
       return (this.page - 1) * this.take;
     },
     displayedElections() {
-      return this.elections.slice(
+      return this.FILTERED_ELECTIONS.slice(
         this.skip,
-        Math.min(this.skip + this.take, this.elections.length)
+        Math.min(this.skip + this.take, this.FILTERED_ELECTIONS.length)
       );
     },
     page() {
-      return Number.parseInt(this.$route?.query?.page || 1);
+      let queryPage = String(this.$route?.query?.page);
+      if (queryPage?.match(/[0-9]/g)) {
+        return Number.parseInt(queryPage);
+      }
+      return 1;
     },
     pageCount() {
-      return Math.ceil(this.elections.length / this.take);
+      return Math.ceil(this.FILTERED_ELECTIONS.length / this.take);
     },
+    ...mapGetters([FILTERED_ELECTIONS]),
   },
   mounted() {
-    const baseURL = process.env.VUE_APP_API_URL;
-    axios.get(`${baseURL}/elections`).then((res) => {
-      this.elections = res.data;
-    });
+    this.FETCH_ELECTIONS();
   },
   methods: {
     nextPage() {
@@ -68,8 +71,26 @@ export default {
       this.page--;
     },
     updatePageSize($event) {
-      this.take = $event;
+      if ($event?.match(/[0-9]/g)) {
+        this.take = Number.parseInt($event);
+      }
+      this.verifyPage();
     },
+    verifyPage() {
+      let queryPage = String(this.$route?.query?.page);
+      if (queryPage?.match(/[0-9]/g)) {
+        if (queryPage > this.pageCount) {
+          this.$router.push({
+            name: "electionFilter",
+            query: {
+              ...this.$route.query,
+              page: this.pageCount,
+            },
+          });
+        }
+      }
+    },
+    ...mapActions([FETCH_ELECTIONS]),
   },
 };
 </script>

@@ -8,6 +8,7 @@
     >
       ↑
     </button>
+    <div v-else class="text-center">⭐</div>
     <button
       v-if="sorted"
       data-test="downvoter"
@@ -51,7 +52,7 @@ export default {
 </script>
 <style scoped>
 button {
-  @apply m-1 p-2 h-10 w-10;
+  @apply m-1 md:p-2 h-7 w-7 md:h-10 md:w-10;
   background-color: navy;
 }
 .energetic {

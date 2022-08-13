@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     electionURL() {
-      return `/elections/${this.election._id || ""}`;
+      return `/elections/${this.election.id || ""}`;
     },
   },
 };

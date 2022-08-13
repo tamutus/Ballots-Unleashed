@@ -1,24 +1,38 @@
 <template>
   <nav class="w-full">
     <div
-      class="fixed top-0 left-0 w-3/4 h-16 bg-nice-background border-b-4 border-solid border-nice-border"
+      class="fixed top-0 left-0 w-3/4 h-12 md:h-16 bg-nice-background border-b-4 border-solid border-nice-border"
     >
-      <div class="ml-0 flex flex-nowrap items-center h-full w-4/5 px-8 mx-auto">
+      <div
+        class="ml-0 flex flex-nowrap items-center h-full w-4/5 md:px-8 mx-auto"
+      >
         <ProfileImage
           v-if="isLoggedIn"
           :img-source="user.profileImage"
-          class="ml-0 rounded-lg"
+          class="rounded-lg"
           data-test="profile-image"
         />
-        <router-link
+        <div
           v-for="menuItem of menuItems"
           :key="menuItem.title"
-          :to="menuItem.link"
-          class="ml-8 first:ml-0"
-          data-test="main-nav-item"
-          @mouseenter="loadSubNav(menuItem)"
-          >{{ menuItem.title }}</router-link
+          class="mx-2 md:ml-4 text-xs md:text-lg flex flex-col md:flex-row"
         >
+          <router-link
+            :to="menuItem.link"
+            data-test="main-nav-item"
+            @mouseenter="loadSubNav(menuItem)"
+            @click="closeSubNav()"
+            >{{ menuItem.title }}</router-link
+          >
+          <font-awesome-icon
+            :ref="`${menuItem.title}-toggler`"
+            :icon="['fas', 'angle-down']"
+            :class="`mt-1 mx-auto md:mt-0 md:ml-1 p-1 text-center caret rounded-full ${
+              menuItem === expandedMenuItem ? 'expanded' : ''
+            }`"
+            @click="toggleSubNav(menuItem)"
+          />
+        </div>
       </div>
     </div>
     <sub-nav
@@ -29,6 +43,8 @@
   </nav>
 </template>
 <script>
+import { mapState } from "vuex";
+
 import ProfileImage from "@/components/ui/ProfileImage.vue";
 import SubNav from "@/components/ui/SubNav.vue";
 
@@ -37,16 +53,6 @@ export default {
   components: {
     ProfileImage: ProfileImage,
     SubNav: SubNav,
-  },
-  props: {
-    user: {
-      type: Object,
-      default: () => {
-        return {
-          username: "Guest",
-        };
-      },
-    },
   },
   data: () => {
     return {
@@ -96,14 +102,16 @@ export default {
         },
       ],
       activeMenuItem: undefined,
+      expandedMenuItem: undefined,
     };
   },
   computed: {
     activeSubMenuItems() {
-      return this.activeMenuItem?.subMenuItems || [];
-    },
-    isLoggedIn() {
-      return this.$store.state.isLoggedIn;
+      return (
+        this.activeMenuItem?.subMenuItems ||
+        this.expandedMenuItem?.subMenuItems ||
+        []
+      );
     },
     subMenuOpen() {
       if (this.activeMenuItem) {
@@ -111,13 +119,33 @@ export default {
       }
       return false;
     },
+    subMenuHeldOpen() {
+      if (this.expandedMenuItem) {
+        return true;
+      }
+      return false;
+    },
+    ...mapState(["isLoggedIn", "user"]),
   },
   methods: {
     loadSubNav(menuItem) {
-      this.activeMenuItem = menuItem;
+      if (!this.subMenuHeldOpen) {
+        this.expandedMenuItem = undefined;
+        this.activeMenuItem = menuItem;
+      }
+    },
+    toggleSubNav(menuItem) {
+      if (menuItem === this.expandedMenuItem) {
+        this.expandedMenuItem = undefined;
+      } else {
+        this.activeMenuItem = undefined;
+        this.expandedMenuItem = menuItem;
+      }
     },
     closeSubNav() {
-      this.activeMenuItem = undefined;
+      if (!this.subMenuHeldOpen) {
+        this.activeMenuItem = undefined;
+      }
     },
   },
 };
@@ -128,5 +156,12 @@ nav {
   flex-flow: row wrap;
   z-index: 10;
   position: relative;
+}
+.caret {
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.caret.expanded {
+  transform: rotateX(180deg);
+  @apply bg-nice-border;
 }
 </style>

@@ -1,13 +1,8 @@
 <template>
   <div id="app-box" :class="appClass">
-    <MainNav :user="user" />
-    <UserNav
-      :user="user"
-      class="relative z-10"
-      @logout="logOut"
-      @login="logIn"
-    />
-    <router-view v-slot="{ Component }" :user="user">
+    <MainNav />
+    <UserNav class="relative z-10" />
+    <router-view v-slot="{ Component }">
       <transition name="slide">
         <component :is="Component" :key="$route.path"></component>
       </transition>
@@ -27,9 +22,6 @@ export default {
   },
   data() {
     return {
-      user: {
-        username: "Guest",
-      },
       activeBackground: "bg-main-background",
     };
   },
@@ -38,18 +30,6 @@ export default {
       return {
         [this.activeBackground]: true,
         "pb-24": true,
-      };
-    },
-  },
-  methods: {
-    logIn() {
-      this.user = {
-        username: "Lavra",
-      };
-    },
-    logOut() {
-      this.user = {
-        username: "Guest",
       };
     },
   },
